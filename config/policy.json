@@ -1,0 +1,100 @@
+{
+  "_comment": "Routing policy. confidence_threshold and retrieval_min_score are rewritten by `python -m evaluation.tune_thresholds` from grouped cross-validation on development tickets.",
+  "confidence_threshold": 0.65,
+  "retrieval_min_score": 0.077,
+  "must_escalate_intents": [
+    "security_incident",
+    "compliance_request",
+    "feature_request",
+    "unclear_request"
+  ],
+  "security_keywords": [
+    "breach",
+    "compromised",
+    "compromise",
+    "hacked",
+    "unauthori[sz]ed access",
+    "leaked",
+    "exposed credential",
+    "stolen",
+    "ransom",
+    "phishing",
+    "still has access",
+    "suspicious login",
+    "data leak"
+  ],
+  "commitment_patterns": [
+    "\\brefund (has been|have been|will be|is being)\\b",
+    "\\b(we|i)('ll| will| have| 've)? (refund|credit|waive|compensate)\\b",
+    "\\bwe guarantee\\b",
+    "\\b(has|have) been (fixed|resolved|patched) on our (side|end)\\b",
+    "\\bwill be (fixed|resolved|released|delivered) (by|on|before|within)\\b",
+    "\\b(eta|estimated delivery)\\b"
+  ],
+  "injection_patterns": [
+    "ignore (all |any |the )?(previous|prior|above|earlier)? ?(instructions|rules|prompts?)",
+    "disregard (all |any |the )?(previous|prior|above)",
+    "(reveal|show|print|repeat) (me )?(your|the) (system )?(prompt|instructions)",
+    "you are now\\b",
+    "\\bact as (a|an|the)\\b",
+    "developer mode",
+    "jailbreak",
+    "</?(ticket|system|sources|assistant)>",
+    "override (your|the) (rules|policy|instructions)"
+  ],
+  "requirement_ids": {
+    "ingest": [
+      "FR-01"
+    ],
+    "classification": [
+      "FR-02",
+      "FR-03"
+    ],
+    "retrieval": [
+      "FR-04"
+    ],
+    "routing": [
+      "FR-05"
+    ],
+    "generation": [
+      "FR-06",
+      "FR-07"
+    ],
+    "validation": [
+      "FR-08",
+      "FR-09"
+    ]
+  },
+  "tuning": {
+    "method": "grouped 5-fold CV on development_tickets.json (identical texts never split across folds)",
+    "wrong_answer_cost": 2.0,
+    "oof_automation_rate": 0.532,
+    "oof_auto_precision": 0.7707,
+    "tuned_at": "2026-11-07T13:41:54+00:00",
+    "embedding_backend_used": "tfidf"
+  },
+  "route_calibration": {
+    "x": [
+      0.053,
+      0.5446,
+      0.5446,
+      0.7951,
+      0.8139,
+      0.8676,
+      0.8696,
+      0.9377,
+      0.9429
+    ],
+    "y": [
+      0.6438,
+      0.6438,
+      0.7405,
+      0.7405,
+      0.8378,
+      0.8378,
+      0.8571,
+      0.8571,
+      1.0
+    ]
+  }
+}

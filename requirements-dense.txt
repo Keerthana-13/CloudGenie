@@ -1,0 +1,5 @@
+# Optional, recommended for best retrieval quality: all-MiniLM-L6-v2 embeddings + Chroma vector store.
+# Install after requirements.txt:  pip install -r requirements-dense.txt
+# The first run downloads the MiniLM model (~90 MB) from Hugging Face.
+sentence-transformers>=2.2
+chromadb>=0.4
