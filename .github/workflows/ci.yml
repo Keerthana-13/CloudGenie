@@ -21,13 +21,13 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Tests (offline mode: no API key, TF-IDF retrieval)
+      - name: "Tests (offline mode: no API key, TF-IDF retrieval)"
         env:
           LLM_PROVIDER: none
           EMBEDDING_BACKEND: tfidf
         run: python -m pytest tests/ -v
 
-      - name: Unattended run over the validation set (offline), then check the log reconciles
+      - name: "Unattended run over the validation set (offline), then check the log reconciles"
         env:
           LLM_PROVIDER: none
           EMBEDDING_BACKEND: tfidf
