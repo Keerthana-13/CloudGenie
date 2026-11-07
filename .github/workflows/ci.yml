@@ -1,5 +1,6 @@
 name: CI
-on:
+
+'on':
   push:
     branches: [main]
   pull_request:
@@ -12,16 +13,20 @@ jobs:
         python-version: ["3.10", "3.12"]
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
+
       - run: pip install -r requirements.txt
+
       - name: Tests (offline mode: no API key, TF-IDF retrieval)
         env:
           LLM_PROVIDER: none
           EMBEDDING_BACKEND: tfidf
         run: python -m pytest tests/ -v
+
       - name: Unattended run over the validation set (offline), then check the log reconciles
         env:
           LLM_PROVIDER: none
@@ -29,18 +34,21 @@ jobs:
         run: |
           python -m evaluation.harness --input data/validation_tickets.json --output evaluation/results/ci --no-llm --no-ledger
           python - <<'PY'
-          import json, sys
+          import json
           r = json.load(open("evaluation/results/ci/metrics.json"))
           assert r["governance"]["decision_log_reconciliation"]["ok"], "decision log does not reconcile"
           assert r["technical"]["routing"]["must_not_auto_respond_violations"] == 0
           assert r["governance"]["private_data_in_sent_replies"] == 0
           print("ok", r["volume"])
           PY
+
   secrets-scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
+
       - name: Fail if a key-like string is committed
         run: |
           ! git grep -InE '(AIza[0-9A-Za-z_-]{30,}|sk-[A-Za-z0-9_-]{20,}|gsk_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})' $(git rev-list --all) -- . ':!*.md'
