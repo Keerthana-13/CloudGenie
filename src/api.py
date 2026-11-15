@@ -33,28 +33,111 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="CloudServe support triage", version="0.1.0", lifespan=lifespan)
 
-CHAT_PAGE = """<!doctype html><meta charset="utf-8"><title>CloudServe support</title>
+CHAT_PAGE = r"""<!doctype html><html lang="en"><meta charset="utf-8"><title>CloudServe support</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<style>body{font:16px/1.5 system-ui;max-width:760px;margin:2rem auto;padding:0 1rem}
-textarea{width:100%;height:5.5rem;font:inherit;padding:.5rem}button{font:inherit;padding:.5rem 1rem;margin-top:.5rem}
-pre{white-space:pre-wrap;background:#f4f4f5;padding:1rem;border-radius:8px}.esc{background:#fff4e5}.ok{background:#eefaf0}
-small{color:#555}</style>
-<h1>CloudServe support</h1>
-<p><small>Demo front-end for the triage system. Replies are drafted automatically from CloudServe's support documentation.</small></p>
-<label>Channel <select id=ch><option>chat</option><option>email</option><option>docs_comment</option><option>forum</option></select></label>
-<textarea id=body placeholder="Describe your problem..."></textarea><br><button onclick=send()>Send</button>
-<div id=out></div>
+<style>
+:root{--bg:#f3f5f9;--card:#fff;--ink:#1f2937;--mute:#6b7280;--line:#e5e7eb;--brand:#2563eb;--ok:#16a34a;--warn:#d97706}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+.app{max-width:800px;margin:0 auto;height:100vh;display:flex;flex-direction:column}
+header{padding:1rem 1.25rem;background:var(--brand);color:#fff}
+header h1{margin:0;font-size:1.15rem}header p{margin:.15rem 0 0;font-size:.82rem;opacity:.85}
+#log{flex:1;overflow-y:auto;padding:1rem 1.25rem;display:flex;flex-direction:column;gap:.9rem}
+.empty{margin:auto;color:var(--mute);text-align:center}
+.row{display:flex}.row.user{justify-content:flex-end}
+.bubble{max-width:85%;padding:.7rem .95rem;border-radius:14px;background:var(--card);border:1px solid var(--line);white-space:pre-wrap;word-wrap:break-word}
+.user .bubble{background:var(--brand);color:#fff;border-color:var(--brand);border-bottom-right-radius:4px}
+.bot .bubble{border-bottom-left-radius:4px;white-space:normal}
+.bot.ok .bubble{border-left:4px solid var(--ok)}.bot.esc .bubble{border-left:4px solid var(--warn)}
+.reply{white-space:pre-wrap}
+.title{font-weight:600;margin-bottom:.35rem}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+.chip{font-size:.74rem;padding:.12rem .55rem;border-radius:999px;background:#eef2ff;color:#3730a3}
+.chip.high{background:#fee2e2;color:#991b1b}
+.sec{margin-top:.7rem;padding-top:.6rem;border-top:1px dashed var(--line)}
+.sec h4{margin:0 0 .25rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}
+.sec ul{margin:0;padding-left:1.1rem}
+dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:.15rem .8rem;font-size:.88rem}
+dt{color:var(--mute)}dd{margin:0}
+details{margin-top:.6rem;font-size:.82rem;color:var(--mute)}
+details pre{white-space:pre-wrap;background:#f4f4f5;padding:.6rem;border-radius:8px;overflow-x:auto}
+form{display:flex;gap:.5rem;padding:.8rem 1.25rem;background:var(--card);border-top:1px solid var(--line);flex-wrap:wrap}
+select,textarea,button{font:inherit;border-radius:10px;border:1px solid var(--line);padding:.55rem .7rem}
+textarea{flex:1 1 300px;resize:none;height:3.2rem}
+button{background:var(--brand);color:#fff;border:0;padding:.55rem 1.2rem;cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}
+.typing{color:var(--mute);font-style:italic}
+</style>
+<div class="app">
+<header><h1>CloudServe support</h1><p>Replies are drafted automatically from CloudServe's support documentation.</p></header>
+<div id="log"><div class="empty" id="empty">Describe your problem below and press Send.</div></div>
+<form id="f">
+<select id="ch" title="Channel"><option>chat</option><option>email</option><option>docs_comment</option><option>forum</option></select>
+<textarea id="body" placeholder="Describe your problem... (Enter to send, Shift+Enter for new line)" required></textarea>
+<button id="btn">Send</button>
+</form></div>
 <script>
-async function send(){
-  const r=await fetch('/v1/tickets',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({channel:ch.value,subject:'',body:body.value})});
-  const j=await r.json(); const el=document.createElement('pre');
-  if(j.disposition==='auto_responded'){el.className='ok';el.textContent=j.reply_text+'\\n\\n['+j.intent+' · confidence '+j.route_confidence+' · '+j.latency_s+'s]';}
-  else{el.className='esc';el.textContent='Passed to our support team'+(j.blocked_by.length?' (automatic reply blocked: '+j.blocked_by.join(', ')+')':'')+
-    '.\\n\\nWhy: '+j.reason+'\\n\\n'+JSON.stringify(j.escalation_brief,null,2);}
-  out.prepend(el);
+const $=id=>document.getElementById(id), log=$('log');
+const pretty=s=>String(s||'').replace(/_/g,' ').replace(/^./,c=>c.toUpperCase());
+function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e}
+function chip(text,cls){return el('span','chip '+(cls||''),text)}
+function add(node){const e=$('empty');if(e)e.remove();log.appendChild(node);log.scrollTop=log.scrollHeight}
+function userMsg(t){const r=el('div','row user');r.appendChild(el('div','bubble',t));add(r)}
+function section(title,child){const s=el('div','sec');s.appendChild(el('h4','',title));s.appendChild(child);return s}
+function list(items){const u=el('ul');items.forEach(i=>u.appendChild(el('li','',i)));return u}
+
+function botMsg(j){
+  const ok=j.disposition==='auto_responded';
+  const row=el('div','row bot '+(ok?'ok':'esc')), b=el('div','bubble');
+  if(ok){
+    b.appendChild(el('div','reply',j.reply_text));
+  }else{
+    b.appendChild(el('div','title','Passed to our support team'));
+    b.appendChild(el('div','',"We couldn't answer this automatically, so a person will follow up."));
+    if(j.reason)b.appendChild(section('Why',el('div','',j.reason)));
+    if((j.blocked_by||[]).length)b.appendChild(section('Automatic reply blocked by',list(j.blocked_by.map(pretty))));
+    const br=j.escalation_brief;
+    if(br){
+      const dl=el('dl');
+      [['Ticket',br.ticket_id],['Likely topic',pretty(br.likely_intent)],['Urgency',pretty(br.urgency)],
+       ['Customer tier',pretty(br.customer_tier)],['Summary',br.summary]].forEach(([k,v])=>{
+        if(v){dl.appendChild(el('dt','',k));dl.appendChild(el('dd','',v))}});
+      b.appendChild(section('Handoff details',dl));
+      if((br.unsure_about||[]).length)b.appendChild(section('Open questions',list(br.unsure_about)));
+      if((br.relevant_articles||[]).length)b.appendChild(section('Possibly relevant articles',
+        list(br.relevant_articles.map(a=>a.title||a.doc_id))));
+      if(br.suggested_draft)b.appendChild(section('Suggested draft',el('div','reply',br.suggested_draft)));
+    }
+  }
+  const chips=el('div','chips');
+  if(j.intent)chips.appendChild(chip(pretty(j.intent)));
+  if(j.urgency)chips.appendChild(chip(pretty(j.urgency)+' urgency',/high|urgent|critical/i.test(j.urgency)?'high':''));
+  if(ok&&j.route_confidence!=null)chips.appendChild(chip('Confidence '+Math.round(j.route_confidence*100)+'%'));
+  if(j.latency_s!=null)chips.appendChild(chip(Number(j.latency_s).toFixed(1)+'s'));
+  if(chips.children.length)b.appendChild(chips);
+  if(ok&&(j.cited_doc_ids||[]).length)b.appendChild(section('Sources',list(j.cited_doc_ids)));
+  const d=el('details');d.appendChild(el('summary','','Technical details (JSON)'));
+  d.appendChild(el('pre','',JSON.stringify(j,null,2)));b.appendChild(d);
+  row.appendChild(b);add(row);
 }
-</script>"""
+
+async function send(){
+  const text=$('body').value.trim();if(!text)return;
+  userMsg(text);$('body').value='';$('btn').disabled=true;
+  const t=el('div','row bot');t.appendChild(el('div','bubble typing','Looking through our documentation...'));add(t);
+  try{
+    const r=await fetch('/v1/tickets',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({channel:$('ch').value,subject:'',body:text})});
+    if(!r.ok)throw new Error('Server returned '+r.status);
+    const j=await r.json();t.remove();botMsg(j);
+  }catch(e){
+    t.remove();const r=el('div','row bot esc'),b=el('div','bubble','Sorry, something went wrong: '+e.message);r.appendChild(b);add(r);
+  }
+  $('btn').disabled=false;$('body').focus();
+}
+$('f').addEventListener('submit',e=>{e.preventDefault();send()});
+$('body').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
+</script></html>"""
 
 
 @app.get("/", response_class=HTMLResponse)
