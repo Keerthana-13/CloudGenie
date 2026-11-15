@@ -165,6 +165,7 @@ def fairness_report(pairs, dims: dict[str, Callable[[dict], str]], min_n: int = 
             exp = [(t, o) for t, o in lab if _lab(t).get("expected_doc_ids")]
             rows[g] = {
                 "n": len(items),
+                "too_small_to_judge": len(items) < min_n,
                 "auto_response_rate": _mean(o["disposition"] == "auto_responded" for _, o in items),
                 "route_accuracy": _mean((o["disposition"] == "auto_responded") == (_lab(t)["expected_route"] == "auto_respond")
                                         for t, o in lab if _lab(t).get("expected_route")),
@@ -176,8 +177,12 @@ def fairness_report(pairs, dims: dict[str, Callable[[dict], str]], min_n: int = 
         for m in metrics:
             vals = [r[m] for r in rows.values() if r[m] is not None and r["n"] >= min_n]
             spread[m] = round(100 * (max(vals) - min(vals)), 1) if len(vals) >= 2 else None
+        flagged = [m for m, v in spread.items() if v is not None and v > TARGETS["cross_group_variation_pts"]]
         out[dim] = {"groups": rows, "spread_pts": spread,
-                    "note": f"spread = best minus worst group among groups with n >= {min_n}; small groups are noisy"}
+                    "flagged_over_target": flagged,
+                    "note": f"spread = best minus worst group among groups with n >= {min_n}; groups below {min_n} are "
+                            f"marked too_small_to_judge and left out of the spread; a spread above "
+                            f"{TARGETS['cross_group_variation_pts']:.0f} points is listed in flagged_over_target"}
     return out
 
 
@@ -226,6 +231,7 @@ def build_report(pairs, resolve, reference, recon: dict, dims, extra: dict) -> d
                       "hallucination_rate": "needs human review of >= 50 replies by two assessors (review_sample.csv)"},
         "calibration": {"intent_confidence": calibration_bands(ic), "routing_confidence": calibration_bands(rc, (0.0, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0001))},
         "governance": {"decision_log_reconciliation": recon,
+                       "availability": (recon.get("tickets_with_final_disposition", 0) / n) if n else None,
                        "guardrail_activations": dict(guard_fail),
                        "tickets_blocked_by_guardrails": blocked,
                        "private_data_detections_blocked": guard_fail.get("pii", 0),

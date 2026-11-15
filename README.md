@@ -95,7 +95,7 @@ After switching backend, re-tune (below) because score scales differ.
 
 | Task | How |
 |---|---|
-| Stop all automatic answers instantly (no deploy) | `POST /admin/kill-switch {"enabled": false}` with header `X-Admin-Token: $ADMIN_TOKEN`, **or** create the file `storage/KILL_SWITCH`, **or** set `AUTO_RESPOND_ENABLED=false`. Checked on every ticket. |
+| Stop all automatic answers instantly (no deploy; full on-call steps in `docs/incident_procedure.md`) | `POST /admin/kill-switch {"enabled": false}` with header `X-Admin-Token: $ADMIN_TOKEN`, **or** create the file `storage/KILL_SWITCH`, **or** set `AUTO_RESPOND_ENABLED=false`. Checked on every ticket. |
 | Resume | `{"enabled": true}` or delete `storage/KILL_SWITCH` |
 | See one ticket's full audit trail | `POST /v1/tickets` returns the `decisions` list; or query `storage/decisions.db` |
 | Prometheus metrics | `GET /metrics` (tickets by disposition, guardrail blocks, latency histogram) |
@@ -133,8 +133,8 @@ src/            ingest · classifier · knowledge_base (+embeddings) · router �
                 decision_log · pipeline · llm · api · config · telemetry
 prompts/        versioned prompt files + register (README.md)
 config/         policy.json — thresholds, must-escalate intents, guardrail patterns
-evaluation/     harness · metrics · tune_thresholds · (results/ is git-ignored)
-tests/          pytest suite (offline)         docs/   architecture and design decisions
+evaluation/     harness · metrics · tune_thresholds · discovery_stats · (results/ is git-ignored)
+tests/          pytest suite (offline)         docs/   architecture, incident procedure, discovery statistics
 data/           the four JSON files supplied with the project (development, validation, documentation, reference answers)
 .github/workflows/ci.yml   tests + unattended validation run + secret scan on every push
 ```

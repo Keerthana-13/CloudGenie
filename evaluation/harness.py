@@ -205,6 +205,9 @@ def render_markdown(r: dict) -> str:
         ("Private data in sent replies", "-", "0", str(g.get("private_data_in_sent_replies")), "met" if g.get("private_data_in_sent_replies") == 0 else "NOT met", ""),
         ("Decision log reconciles", "-", "100%", "yes" if g["decision_log_reconciliation"]["ok"] else "NO", "met" if g["decision_log_reconciliation"]["ok"] else "NOT met", ""),
     ]
+    avail = g.get("availability")
+    rows.append(("Availability (tickets handled)", "-", "99.5%+", fmt(avail), M.status(avail, 0.995),
+                 "tickets ending in a reply or a logged escalation; run with --no-llm for the provider-disconnected figure"))
     fair = g["fairness"]
     worst = max((s for d in fair.values() for s in d["spread_pts"].values() if s is not None), default=None)
     rows.append(("Cross-group variation (max spread)", "-", "<5 pts", "n/a" if worst is None else f"{worst:.1f} pts",
@@ -243,8 +246,10 @@ def render_markdown(r: dict) -> str:
               f"- Guardrail activations: {g['guardrail_activations'] or 'none'}; private-data blocks {g['private_data_detections_blocked']}; private data in sent replies {g['private_data_in_sent_replies']}", "",
               "### Fairness (spread = best minus worst group, groups with n>=10)", ""]
     for dim, d in fair.items():
-        lines.append(f"**{dim}**: " + ", ".join(f"{k} (n={x['n']}, auto {fmt(x['auto_response_rate'])}, route acc {fmt(x['route_accuracy'])}, retrieval hit {fmt(x['retrieval_hit_rate'])})" for k, x in d["groups"].items()))
+        lines.append(f"**{dim}**: " + ", ".join(f"{k} (n={x['n']}{', too small to judge' if x.get('too_small_to_judge') else ''}, auto {fmt(x['auto_response_rate'])}, route acc {fmt(x['route_accuracy'])}, retrieval hit {fmt(x['retrieval_hit_rate'])})" for k, x in d["groups"].items()))
         lines.append(f"  spread (pts): {d['spread_pts']}")
+        if d.get("flagged_over_target"):
+            lines.append(f"  **over the 5-point target:** {', '.join(d['flagged_over_target'])}")
         lines.append("")
     lines += ["## Caveats", "",
               "- The figures above should be treated with caution: FCR is a proxy (answered without a human is not the same as solved), "
