@@ -74,7 +74,7 @@ Get a free key from Google AI Studio, then in `.env`:
 ```
 LLM_PROVIDER=gemini
 GEMINI_API_KEY=<your key>
-MODEL_NAME=gemini-2.5-flash        # use any model your key can access
+MODEL_NAME=        # use any model your key can access
 LLM_RPM=10                         # keep below your free-tier requests-per-minute quota
 ```
 `LLM_PROVIDER=openrouter` / `groq` work the same way with `OPENROUTER_API_KEY` / `GROQ_API_KEY`.
