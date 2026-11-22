@@ -13,6 +13,7 @@ import re
 
 import numpy as np
 
+from . import answerability
 from .schemas import ClassResult, RetrievalResult, RouteDecision, Ticket
 
 
@@ -30,13 +31,22 @@ def calibrated_confidence(raw: float, policy: dict) -> float:
     return round(float(np.interp(raw, cal["x"], cal["y"])), 4)
 
 
+def route_confidence(cls: ClassResult, retrieval: RetrievalResult, policy: dict) -> float:
+    """Confidence that *auto-answering is right*. Uses the per-ticket answerability model when the policy
+    carries one (fitted by evaluation/tune_thresholds.py); otherwise the older intent x prior score."""
+    model = policy.get("answerability")
+    if model:
+        return answerability.confidence(model, cls, retrieval)
+    return calibrated_confidence(raw_route_confidence(cls), policy)
+
+
 def route(ticket: Ticket, cls: ClassResult, retrieval: RetrievalResult, policy: dict,
           kill_switch: bool = False) -> RouteDecision:
     threshold = float(policy["confidence_threshold"])
     must = set(policy["must_escalate_intents"])
     flags: list[str] = []
-    # Confidence that *auto-answering is right*: right intent AND the kind of ticket that docs can answer.
-    confidence = calibrated_confidence(raw_route_confidence(cls), policy)
+    confidence = route_confidence(cls, retrieval, policy)
+    modelled = bool(policy.get("answerability"))
 
     def esc(rule: str, reason: str) -> RouteDecision:
         return RouteDecision("escalate", reason, rule, confidence, threshold, flags)
@@ -65,6 +75,12 @@ def route(ticket: Ticket, cls: ClassResult, retrieval: RetrievalResult, policy: 
                    f"minimum {retrieval.min_score:.2f}); there is nothing to ground an answer in.")
 
     if confidence < threshold:
+        if modelled:
+            return esc("low_confidence",
+                       f"Confidence {confidence:.2f} is below the {threshold:.2f} threshold: classified as "
+                       f"'{cls.intent}' ({cls.confidence:.0%} sure); {cls.answer_prior:.0%} of past '{cls.intent}' tickets "
+                       f"were answerable, and the best article ({retrieval.passages[0].doc_id}, score "
+                       f"{retrieval.passages[0].score:.2f}) is not a convincing enough match.")
         return esc("low_confidence",
                    f"Confidence {confidence:.2f} is below the {threshold:.2f} threshold: classified as "
                    f"'{cls.intent}' ({cls.confidence:.0%} sure), and only {cls.answer_prior:.0%} of past '{cls.intent}' "

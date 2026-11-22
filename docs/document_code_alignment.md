@@ -108,6 +108,24 @@ Result: 56 of 56 tests pass using the project's `.venv`.
 - **Validation inflation:** Stage 1 (T1) says 62 of 80 validation texts repeat a development text. Stage 3 uses the same number, and the stored report agrees (n=62 and n=18). Consistent.
 - **Escalation targets:** Stage 1 says 60% FCR and 30% escalation cannot both hold. Stage 3 and the harness still report both targets in the table. Worth a note in the report that the two are the same number.
 
+## 3a. Status update, 2026-11-22
+
+Resolved since the check above:
+
+- **Stage 1 items 1 to 1e.** `evaluation/discovery_stats.py` now emits the effort-by-intent block (E1 to E11), the escalation rate by intent (I3), the fluency satisfaction bootstrap interval (D2, seed 20260101: -0.19 to +0.37), the documentation and reference-answer statistics (S2, S3) and the personal-data scan (S4). The footer claim is reproducible; see `docs/discovery_stats_output.md`.
+- **Stage 3 item 1 (stale stored report).** `evaluation/results/validation/` was regenerated on 2026-11-21 and now has the availability row, the "too small to judge" marker and the over-target lines, plus 95% bootstrap intervals.
+- **Stage 3 item 2 (TF-IDF figures).** `docs/sample_validation_report_offline.md` is a reproducible TF-IDF run (90.6% top result, 96.2% top three, 11.1% empty).
+- **Stage 3 item 3 (grouped-CV intent metrics).** `python -m evaluation.tune_thresholds` prints them: intent accuracy 82.2%, macro precision 86.3%, macro recall 81.0%, urgency 49.0% against a 45.2% baseline.
+- **Test count.** The suite now has 69 tests, not 56.
+
+Corrections to this document:
+
+- The validation file has been run 6 times in `evaluation/run_ledger.jsonl` (five on 2026-11-07, one on 2026-11-15), not 3.
+- PR-02 has been run live: `storage/llm_cache` holds 55 model replies from 2026-11-07. No report of that run is stored and the model id is not recorded, so the open item is the missing report, not the missing run.
+- `.env.example` still says `MODEL_NAME= gemini-3.5-flash-lite`, while `src/config.py` defaults to `gemini-2.5-flash`; item 6 above is not fixed in the repository.
+
+Still open: the PRD mapping and revision log (Stage 1 item 2), the dataset-conflict decisions (item 3), the 50-reply human review, the PR-03 trial, the Q7 accountability decision, and moving the relevance floor in `config/policy.json` to the MiniLM scale (0.333).
+
 ## 4. Recommended order of fixes
 
 1. Re-run the validation harness so the stored report includes the new availability and fairness markers.

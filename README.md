@@ -62,6 +62,8 @@ python -m evaluation.harness --input <any file in the ticket schema> --output <d
 * Writes `metrics.md` / `metrics.json` (volume, business, technical, governance, calibration, fairness),
   `results.jsonl`, `decisions.db` (the decision log for the run), per-class and confusion CSVs,
   `escalation_briefs.jsonl`, and `review_sample.csv` (50 replies for two human assessors).
+* Fairness rates carry 95% bootstrap intervals, and each best-minus-worst spread is labelled over target, within
+  target or inconclusive according to whether its whole interval lies above, below or across the 5-point target.
 * Appends one line per run to `evaluation/run_ledger.jsonl` (time, input hash, ticket count) so the report can
   state when, and how many times, the held-out set was run. `--no-ledger` disables it for experiments.
 * Other flags: `--no-llm` (force extractive replies), `--limit N` (first N tickets).

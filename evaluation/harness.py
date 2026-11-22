@@ -210,8 +210,11 @@ def render_markdown(r: dict) -> str:
                  "tickets ending in a reply or a logged escalation; run with --no-llm for the provider-disconnected figure"))
     fair = g["fairness"]
     worst = max((s for d in fair.values() for s in d["spread_pts"].values() if s is not None), default=None)
+    credible = sorted({f"{dim}/{m}" for dim, d in fair.items() for m in d.get("credibly_over_target", [])})
     rows.append(("Cross-group variation (max spread)", "-", "<5 pts", "n/a" if worst is None else f"{worst:.1f} pts",
-                 M.status(worst, 5.0, False), "see fairness section; small groups are noisy"))
+                 M.status(worst, 5.0, False),
+                 "point estimate; 95% bootstrap intervals in the fairness section show which gaps exceed noise" +
+                 (f" (interval entirely above 5 pts: {len(credible)} of {sum(1 for d in fair.values() for v in d['spread_pts'].values() if v is not None)} measures)" if worst is not None else "")))
     lines = [f"# Evaluation report", "",
              f"- Input: `{run_['input_file']}` ({run_['tickets']} tickets, sha256 {run_['input_sha256']})",
              f"- Run at {run_['timestamp_utc']} UTC, commit `{run_['git_commit']}`, wall-clock {run_['wall_clock_seconds']} s",
@@ -244,12 +247,22 @@ def render_markdown(r: dict) -> str:
     lines += ["", "## Governance", "", f"- Decision log: {g['decision_log_reconciliation']['decisions_logged']} decisions for "
               f"{g['decision_log_reconciliation']['tickets_processed']} tickets; reconciles: **{g['decision_log_reconciliation']['ok']}**",
               f"- Guardrail activations: {g['guardrail_activations'] or 'none'}; private-data blocks {g['private_data_detections_blocked']}; private data in sent replies {g['private_data_in_sent_replies']}", "",
-              "### Fairness (spread = best minus worst group, groups with n>=10)", ""]
+              "### Fairness (spread = best minus worst group, groups with n>=10; [lo-hi] and the spread intervals are 95% bootstrap intervals, in % points)", ""]
+    ci = lambda x, m: (lambda c: "" if not c else f" [{c[0]:.0f}-{c[1]:.0f}]")((x.get("ci95_pts") or {}).get(m))
     for dim, d in fair.items():
-        lines.append(f"**{dim}**: " + ", ".join(f"{k} (n={x['n']}{', too small to judge' if x.get('too_small_to_judge') else ''}, auto {fmt(x['auto_response_rate'])}, route acc {fmt(x['route_accuracy'])}, retrieval hit {fmt(x['retrieval_hit_rate'])})" for k, x in d["groups"].items()))
+        lines.append(f"**{dim}**: " + ", ".join(
+            f"{k} (n={x['n']}{', too small to judge' if x.get('too_small_to_judge') else ''}, "
+            f"auto {fmt(x['auto_response_rate'])}{ci(x, 'auto_response_rate')}, "
+            f"route acc {fmt(x['route_accuracy'])}{ci(x, 'route_accuracy')}, "
+            f"retrieval hit {fmt(x['retrieval_hit_rate'])})" for k, x in d["groups"].items()))
         lines.append(f"  spread (pts): {d['spread_pts']}")
-        if d.get("flagged_over_target"):
-            lines.append(f"  **over the 5-point target:** {', '.join(d['flagged_over_target'])}")
+        for m, c in (d.get("spread_ci95_pts") or {}).items():
+            if c is not None and d["spread_pts"].get(m) is not None:
+                lines.append(f"  - {m}: {d['spread_pts'][m]} pts, 95% bootstrap interval {c[0]:.1f}-{c[1]:.1f} -> {d['spread_verdict'][m]}")
+        if d.get("credibly_over_target"):
+            lines.append(f"  **credibly over the 5-point target (interval entirely above it):** {', '.join(d['credibly_over_target'])}")
+        elif d.get("flagged_over_target"):
+            lines.append(f"  over the 5-point target on the point estimate only (not conclusive): {', '.join(d['flagged_over_target'])}")
         lines.append("")
     lines += ["## Caveats", "",
               "- The figures above should be treated with caution: FCR is a proxy (answered without a human is not the same as solved), "

@@ -47,6 +47,7 @@ class ClassResult:
     answer_prior: float              # P(ticket is answerable from docs | intent), from past tickets
     fallback: bool = False
     model_version: str = ""
+    preferred_docs: list[str] = field(default_factory=list)   # articles that usually answer this intent
 
     def to_dict(self) -> dict:
         return asdict(self)

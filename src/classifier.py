@@ -167,7 +167,7 @@ class TicketClassifier:
                 ui = int(np.argmax(up))
                 urgency, u_conf = str(self.urgency_pipe.classes_[ui]), float(up[ui])
             return ClassResult(intent, conf, alts, urgency, u_conf, self.answer_prior(intent, urgency),
-                               False, MODEL_VERSION)
+                               False, MODEL_VERSION, list(self.intent_docs.get(intent, [])))
         except Exception as exc:
             log.warning("classification fallback: %s", exc)
             return ClassResult(FALLBACK_INTENT, 0.0, [], "medium", 0.0, 0.0, True, MODEL_VERSION)

@@ -153,36 +153,76 @@ def latency_report(outcomes: list[dict]) -> dict:
             "note": "Latency excludes our own free-tier throttle sleeps (reported separately); it includes retrieval, classification, generation and validation."}
 
 
-def fairness_report(pairs, dims: dict[str, Callable[[dict], str]], min_n: int = 10) -> dict:
+BOOTSTRAP_RESAMPLES = 2000
+FAIRNESS_METRICS = ["auto_response_rate", "route_accuracy", "intent_accuracy", "retrieval_hit_rate"]
+
+
+def _bootstrap_means(values: np.ndarray, rng: np.random.Generator, resamples: int = BOOTSTRAP_RESAMPLES) -> np.ndarray:
+    """Means of `resamples` bootstrap resamples (with replacement) of a 0/1 vector."""
+    idx = rng.integers(0, len(values), size=(resamples, len(values)))
+    return values[idx].mean(axis=1)
+
+
+def _ci_pts(samples: np.ndarray) -> list[float]:
+    lo, hi = np.percentile(samples, [2.5, 97.5])
+    return [round(100 * float(lo), 1), round(100 * float(hi), 1)]
+
+
+def _spread_verdict(ci: list[float], target: float) -> str:
+    if ci[0] > target:
+        return "over target (whole 95% interval above it)"
+    if ci[1] < target:
+        return "within target (whole 95% interval below it)"
+    return "inconclusive (95% interval spans the target - more tickets needed)"
+
+
+def fairness_report(pairs, dims: dict[str, Callable[[dict], str]], min_n: int = 10, seed: int = 20260101) -> dict:
+    """Per-group rates with percentile-bootstrap 95% intervals, and the best-minus-worst spread with its own interval.
+
+    The interval says how much of a gap could be sampling noise: with 19 tickets in a group a rate moves by tens
+    of points between resamples. Spread = max - min is biased upward when groups are small (the extremes of noisy
+    estimates), so the interval is the thing to read, not just the point estimate. The seed is fixed so the same
+    input always gives the same report."""
+    target = TARGETS["cross_group_variation_pts"]
     out = {}
     for dim, keyfn in dims.items():
+        rng = np.random.default_rng(seed)
         groups = defaultdict(list)
         for t, o in pairs:
             groups[keyfn(t)].append((t, o))
-        rows = {}
+        rows, vecs = {}, {}
         for g, items in sorted(groups.items()):
             lab = [(t, o) for t, o in items if _lab(t)]
             exp = [(t, o) for t, o in lab if _lab(t).get("expected_doc_ids")]
-            rows[g] = {
-                "n": len(items),
-                "too_small_to_judge": len(items) < min_n,
-                "auto_response_rate": _mean(o["disposition"] == "auto_responded" for _, o in items),
-                "route_accuracy": _mean((o["disposition"] == "auto_responded") == (_lab(t)["expected_route"] == "auto_respond")
-                                        for t, o in lab if _lab(t).get("expected_route")),
-                "intent_accuracy": _mean(o["intent"] == _lab(t)["intent"] for t, o in lab if _lab(t).get("intent")),
-                "retrieval_hit_rate": _mean(any(s["doc_id"] in _lab(t)["expected_doc_ids"] for s in o["sources"]) for t, o in exp),
+            v = {
+                "auto_response_rate": [o["disposition"] == "auto_responded" for _, o in items],
+                "route_accuracy": [(o["disposition"] == "auto_responded") == (_lab(t)["expected_route"] == "auto_respond")
+                                   for t, o in lab if _lab(t).get("expected_route")],
+                "intent_accuracy": [o["intent"] == _lab(t)["intent"] for t, o in lab if _lab(t).get("intent")],
+                "retrieval_hit_rate": [any(s["doc_id"] in _lab(t)["expected_doc_ids"] for s in o["sources"]) for t, o in exp],
             }
-        metrics = ["auto_response_rate", "route_accuracy", "intent_accuracy", "retrieval_hit_rate"]
-        spread = {}
-        for m in metrics:
-            vals = [r[m] for r in rows.values() if r[m] is not None and r["n"] >= min_n]
+            vecs[g] = {m: np.array(x, dtype=float) for m, x in v.items()}
+            rows[g] = {"n": len(items), "too_small_to_judge": len(items) < min_n,
+                       **{m: _mean(x) for m, x in v.items()},
+                       "ci95_pts": {m: (_ci_pts(_bootstrap_means(vecs[g][m], rng)) if len(x) else None) for m, x in v.items()}}
+        spread, spread_ci, verdict = {}, {}, {}
+        for m in FAIRNESS_METRICS:
+            elig = [g for g, r in rows.items() if r[m] is not None and r["n"] >= min_n]
+            vals = [rows[g][m] for g in elig]
             spread[m] = round(100 * (max(vals) - min(vals)), 1) if len(vals) >= 2 else None
-        flagged = [m for m, v in spread.items() if v is not None and v > TARGETS["cross_group_variation_pts"]]
-        out[dim] = {"groups": rows, "spread_pts": spread,
-                    "flagged_over_target": flagged,
+            if len(elig) >= 2:
+                boot = np.stack([_bootstrap_means(vecs[g][m], rng) for g in elig])          # groups x resamples
+                spread_ci[m] = _ci_pts(boot.max(axis=0) - boot.min(axis=0))
+                verdict[m] = _spread_verdict(spread_ci[m], target)
+            else:
+                spread_ci[m], verdict[m] = None, None
+        out[dim] = {"groups": rows, "spread_pts": spread, "spread_ci95_pts": spread_ci, "spread_verdict": verdict,
+                    "flagged_over_target": [m for m, v in spread.items() if v is not None and v > target],
+                    "credibly_over_target": [m for m, c in spread_ci.items() if c is not None and c[0] > target],
                     "note": f"spread = best minus worst group among groups with n >= {min_n}; groups below {min_n} are "
-                            f"marked too_small_to_judge and left out of the spread; a spread above "
-                            f"{TARGETS['cross_group_variation_pts']:.0f} points is listed in flagged_over_target"}
+                            f"marked too_small_to_judge and left out of the spread; a spread above {target:.0f} points is "
+                            f"listed in flagged_over_target, and in credibly_over_target only if the whole bootstrap "
+                            f"{BOOTSTRAP_RESAMPLES}-resample 95% interval of the spread is above it"}
     return out
 
 
