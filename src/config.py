@@ -17,7 +17,7 @@ SYSTEM_VERSION = "0.1.0"
 # provider -> (base url, key env var, default model). All speak the OpenAI chat-completions dialect,
 # which is why switching provider is a .env change and not a code change.
 PROVIDERS = {
-    "gemini": ("https://generativelanguage.googleapis.com/v1beta/openai", "GEMINI_API_KEY", "gemini-2.5-flash"),
+    "gemini": ("https://generativelanguage.googleapis.com/v1beta/openai", "GEMINI_API_KEY", "gemini-3.5-flash-lite"),
     "openrouter": ("https://openrouter.ai/api/v1", "OPENROUTER_API_KEY", "meta-llama/llama-3.1-8b-instruct"),
     "groq": ("https://api.groq.com/openai/v1", "GROQ_API_KEY", "llama-3.1-8b-instant"),
 }

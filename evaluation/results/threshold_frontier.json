@@ -1,0 +1,678 @@
+{
+  "wrong_cost": 2.0,
+  "retrieval_min_score": 0.333,
+  "confidence_score_used": "legacy",
+  "chosen": {
+    "threshold": 0.69,
+    "automation_rate": 0.53,
+    "auto_precision": 0.7660377358490567,
+    "wrong_auto_answers": 62,
+    "must_not_violations": 0,
+    "auto_answered": 265,
+    "n": 500,
+    "net_benefit": 79.0
+  },
+  "frontier": [
+    {
+      "threshold": 0.4,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.41,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.42,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.43,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.44,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.45,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.46,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.47,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.48,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.49,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.5,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.51,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.52,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.53,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.54,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.55,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.56,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.57,
+      "automation_rate": 0.81,
+      "auto_precision": 0.7308641975308642,
+      "wrong_auto_answers": 109,
+      "must_not_violations": 12,
+      "auto_answered": 405,
+      "n": 500,
+      "net_benefit": 78.0
+    },
+    {
+      "threshold": 0.58,
+      "automation_rate": 0.752,
+      "auto_precision": 0.7180851063829787,
+      "wrong_auto_answers": 106,
+      "must_not_violations": 12,
+      "auto_answered": 376,
+      "n": 500,
+      "net_benefit": 58.0
+    },
+    {
+      "threshold": 0.59,
+      "automation_rate": 0.752,
+      "auto_precision": 0.7180851063829787,
+      "wrong_auto_answers": 106,
+      "must_not_violations": 12,
+      "auto_answered": 376,
+      "n": 500,
+      "net_benefit": 58.0
+    },
+    {
+      "threshold": 0.6,
+      "automation_rate": 0.752,
+      "auto_precision": 0.7180851063829787,
+      "wrong_auto_answers": 106,
+      "must_not_violations": 12,
+      "auto_answered": 376,
+      "n": 500,
+      "net_benefit": 58.0
+    },
+    {
+      "threshold": 0.61,
+      "automation_rate": 0.752,
+      "auto_precision": 0.7180851063829787,
+      "wrong_auto_answers": 106,
+      "must_not_violations": 12,
+      "auto_answered": 376,
+      "n": 500,
+      "net_benefit": 58.0
+    },
+    {
+      "threshold": 0.62,
+      "automation_rate": 0.752,
+      "auto_precision": 0.7180851063829787,
+      "wrong_auto_answers": 106,
+      "must_not_violations": 12,
+      "auto_answered": 376,
+      "n": 500,
+      "net_benefit": 58.0
+    },
+    {
+      "threshold": 0.63,
+      "automation_rate": 0.728,
+      "auto_precision": 0.7142857142857143,
+      "wrong_auto_answers": 104,
+      "must_not_violations": 12,
+      "auto_answered": 364,
+      "n": 500,
+      "net_benefit": 52.0
+    },
+    {
+      "threshold": 0.64,
+      "automation_rate": 0.636,
+      "auto_precision": 0.7169811320754716,
+      "wrong_auto_answers": 90,
+      "must_not_violations": 12,
+      "auto_answered": 318,
+      "n": 500,
+      "net_benefit": 48.0
+    },
+    {
+      "threshold": 0.65,
+      "automation_rate": 0.636,
+      "auto_precision": 0.7169811320754716,
+      "wrong_auto_answers": 90,
+      "must_not_violations": 12,
+      "auto_answered": 318,
+      "n": 500,
+      "net_benefit": 48.0
+    },
+    {
+      "threshold": 0.66,
+      "automation_rate": 0.636,
+      "auto_precision": 0.7169811320754716,
+      "wrong_auto_answers": 90,
+      "must_not_violations": 12,
+      "auto_answered": 318,
+      "n": 500,
+      "net_benefit": 48.0
+    },
+    {
+      "threshold": 0.67,
+      "automation_rate": 0.57,
+      "auto_precision": 0.7368421052631579,
+      "wrong_auto_answers": 75,
+      "must_not_violations": 8,
+      "auto_answered": 285,
+      "n": 500,
+      "net_benefit": 60.0
+    },
+    {
+      "threshold": 0.68,
+      "automation_rate": 0.57,
+      "auto_precision": 0.7368421052631579,
+      "wrong_auto_answers": 75,
+      "must_not_violations": 8,
+      "auto_answered": 285,
+      "n": 500,
+      "net_benefit": 60.0
+    },
+    {
+      "threshold": 0.69,
+      "automation_rate": 0.53,
+      "auto_precision": 0.7660377358490567,
+      "wrong_auto_answers": 62,
+      "must_not_violations": 0,
+      "auto_answered": 265,
+      "n": 500,
+      "net_benefit": 79.0
+    },
+    {
+      "threshold": 0.7,
+      "automation_rate": 0.53,
+      "auto_precision": 0.7660377358490567,
+      "wrong_auto_answers": 62,
+      "must_not_violations": 0,
+      "auto_answered": 265,
+      "n": 500,
+      "net_benefit": 79.0
+    },
+    {
+      "threshold": 0.71,
+      "automation_rate": 0.53,
+      "auto_precision": 0.7660377358490567,
+      "wrong_auto_answers": 62,
+      "must_not_violations": 0,
+      "auto_answered": 265,
+      "n": 500,
+      "net_benefit": 79.0
+    },
+    {
+      "threshold": 0.72,
+      "automation_rate": 0.464,
+      "auto_precision": 0.7586206896551724,
+      "wrong_auto_answers": 56,
+      "must_not_violations": 0,
+      "auto_answered": 232,
+      "n": 500,
+      "net_benefit": 64.0
+    },
+    {
+      "threshold": 0.73,
+      "automation_rate": 0.464,
+      "auto_precision": 0.7586206896551724,
+      "wrong_auto_answers": 56,
+      "must_not_violations": 0,
+      "auto_answered": 232,
+      "n": 500,
+      "net_benefit": 64.0
+    },
+    {
+      "threshold": 0.74,
+      "automation_rate": 0.436,
+      "auto_precision": 0.7568807339449541,
+      "wrong_auto_answers": 53,
+      "must_not_violations": 0,
+      "auto_answered": 218,
+      "n": 500,
+      "net_benefit": 59.0
+    },
+    {
+      "threshold": 0.75,
+      "automation_rate": 0.316,
+      "auto_precision": 0.7911392405063291,
+      "wrong_auto_answers": 33,
+      "must_not_violations": 0,
+      "auto_answered": 158,
+      "n": 500,
+      "net_benefit": 59.0
+    },
+    {
+      "threshold": 0.76,
+      "automation_rate": 0.316,
+      "auto_precision": 0.7911392405063291,
+      "wrong_auto_answers": 33,
+      "must_not_violations": 0,
+      "auto_answered": 158,
+      "n": 500,
+      "net_benefit": 59.0
+    },
+    {
+      "threshold": 0.77,
+      "automation_rate": 0.21,
+      "auto_precision": 0.8380952380952381,
+      "wrong_auto_answers": 17,
+      "must_not_violations": 0,
+      "auto_answered": 105,
+      "n": 500,
+      "net_benefit": 54.0
+    },
+    {
+      "threshold": 0.78,
+      "automation_rate": 0.21,
+      "auto_precision": 0.8380952380952381,
+      "wrong_auto_answers": 17,
+      "must_not_violations": 0,
+      "auto_answered": 105,
+      "n": 500,
+      "net_benefit": 54.0
+    },
+    {
+      "threshold": 0.79,
+      "automation_rate": 0.21,
+      "auto_precision": 0.8380952380952381,
+      "wrong_auto_answers": 17,
+      "must_not_violations": 0,
+      "auto_answered": 105,
+      "n": 500,
+      "net_benefit": 54.0
+    },
+    {
+      "threshold": 0.8,
+      "automation_rate": 0.21,
+      "auto_precision": 0.8380952380952381,
+      "wrong_auto_answers": 17,
+      "must_not_violations": 0,
+      "auto_answered": 105,
+      "n": 500,
+      "net_benefit": 54.0
+    },
+    {
+      "threshold": 0.81,
+      "automation_rate": 0.208,
+      "auto_precision": 0.8365384615384616,
+      "wrong_auto_answers": 17,
+      "must_not_violations": 0,
+      "auto_answered": 104,
+      "n": 500,
+      "net_benefit": 53.0
+    },
+    {
+      "threshold": 0.82,
+      "automation_rate": 0.102,
+      "auto_precision": 0.7647058823529411,
+      "wrong_auto_answers": 12,
+      "must_not_violations": 0,
+      "auto_answered": 51,
+      "n": 500,
+      "net_benefit": 15.0
+    },
+    {
+      "threshold": 0.83,
+      "automation_rate": 0.088,
+      "auto_precision": 0.7272727272727273,
+      "wrong_auto_answers": 12,
+      "must_not_violations": 0,
+      "auto_answered": 44,
+      "n": 500,
+      "net_benefit": 8.0
+    },
+    {
+      "threshold": 0.84,
+      "automation_rate": 0.058,
+      "auto_precision": 0.6551724137931034,
+      "wrong_auto_answers": 10,
+      "must_not_violations": 0,
+      "auto_answered": 29,
+      "n": 500,
+      "net_benefit": -1.0
+    },
+    {
+      "threshold": 0.85,
+      "automation_rate": 0.058,
+      "auto_precision": 0.6551724137931034,
+      "wrong_auto_answers": 10,
+      "must_not_violations": 0,
+      "auto_answered": 29,
+      "n": 500,
+      "net_benefit": -1.0
+    },
+    {
+      "threshold": 0.86,
+      "automation_rate": 0.048,
+      "auto_precision": 0.6666666666666666,
+      "wrong_auto_answers": 8,
+      "must_not_violations": 0,
+      "auto_answered": 24,
+      "n": 500,
+      "net_benefit": 0.0
+    },
+    {
+      "threshold": 0.87,
+      "automation_rate": 0.028,
+      "auto_precision": 0.7142857142857143,
+      "wrong_auto_answers": 4,
+      "must_not_violations": 0,
+      "auto_answered": 14,
+      "n": 500,
+      "net_benefit": 2.0
+    },
+    {
+      "threshold": 0.88,
+      "automation_rate": 0.028,
+      "auto_precision": 0.7142857142857143,
+      "wrong_auto_answers": 4,
+      "must_not_violations": 0,
+      "auto_answered": 14,
+      "n": 500,
+      "net_benefit": 2.0
+    },
+    {
+      "threshold": 0.89,
+      "automation_rate": 0.028,
+      "auto_precision": 0.7142857142857143,
+      "wrong_auto_answers": 4,
+      "must_not_violations": 0,
+      "auto_answered": 14,
+      "n": 500,
+      "net_benefit": 2.0
+    },
+    {
+      "threshold": 0.9,
+      "automation_rate": 0.02,
+      "auto_precision": 0.7,
+      "wrong_auto_answers": 3,
+      "must_not_violations": 0,
+      "auto_answered": 10,
+      "n": 500,
+      "net_benefit": 1.0
+    },
+    {
+      "threshold": 0.91,
+      "automation_rate": 0.02,
+      "auto_precision": 0.7,
+      "wrong_auto_answers": 3,
+      "must_not_violations": 0,
+      "auto_answered": 10,
+      "n": 500,
+      "net_benefit": 1.0
+    },
+    {
+      "threshold": 0.92,
+      "automation_rate": 0.02,
+      "auto_precision": 0.7,
+      "wrong_auto_answers": 3,
+      "must_not_violations": 0,
+      "auto_answered": 10,
+      "n": 500,
+      "net_benefit": 1.0
+    },
+    {
+      "threshold": 0.93,
+      "automation_rate": 0.02,
+      "auto_precision": 0.7,
+      "wrong_auto_answers": 3,
+      "must_not_violations": 0,
+      "auto_answered": 10,
+      "n": 500,
+      "net_benefit": 1.0
+    },
+    {
+      "threshold": 0.94,
+      "automation_rate": 0.02,
+      "auto_precision": 0.7,
+      "wrong_auto_answers": 3,
+      "must_not_violations": 0,
+      "auto_answered": 10,
+      "n": 500,
+      "net_benefit": 1.0
+    },
+    {
+      "threshold": 0.95,
+      "automation_rate": 0.002,
+      "auto_precision": 0.0,
+      "wrong_auto_answers": 1,
+      "must_not_violations": 0,
+      "auto_answered": 1,
+      "n": 500,
+      "net_benefit": -2.0
+    }
+  ],
+  "calibration": [
+    {
+      "band": "0.5-0.6",
+      "n": 29,
+      "stated": 0.57,
+      "observed": 0.897
+    },
+    {
+      "band": "0.6-0.7",
+      "n": 111,
+      "stated": 0.652,
+      "observed": 0.604
+    },
+    {
+      "band": "0.7-0.8",
+      "n": 160,
+      "stated": 0.745,
+      "observed": 0.719
+    },
+    {
+      "band": "0.8-0.9",
+      "n": 91,
+      "stated": 0.823,
+      "observed": 0.857
+    },
+    {
+      "band": "0.9-1.0",
+      "n": 14,
+      "stated": 0.933,
+      "observed": 0.714
+    }
+  ],
+  "legacy_chosen": {
+    "threshold": 0.69,
+    "automation_rate": 0.53,
+    "auto_precision": 0.7660377358490567,
+    "wrong_auto_answers": 62,
+    "must_not_violations": 0,
+    "auto_answered": 265,
+    "n": 500,
+    "net_benefit": 79.0
+  },
+  "model_chosen": {
+    "threshold": 0.83,
+    "automation_rate": 0.178,
+    "auto_precision": 0.8089887640449438,
+    "wrong_auto_answers": 17,
+    "must_not_violations": 0,
+    "auto_answered": 89,
+    "n": 500,
+    "net_benefit": 38.0
+  },
+  "answerability_model": {
+    "features": [
+      "intent_conf",
+      "answer_prior",
+      "intent_x_prior",
+      "top_score",
+      "score_margin",
+      "top_in_intent_docs",
+      "n_passages"
+    ],
+    "mean": [
+      0.799463,
+      0.734473,
+      0.579753,
+      0.60577,
+      0.228295,
+      0.851852,
+      2.516049
+    ],
+    "scale": [
+      0.329612,
+      0.141608,
+      0.267859,
+      0.09364,
+      0.145191,
+      0.355247,
+      0.690582
+    ],
+    "coef": [
+      -0.097841,
+      0.562191,
+      -0.175101,
+      0.198806,
+      -0.270898,
+      0.455433,
+      -0.357814
+    ],
+    "intercept": 1.07234,
+    "C": 1.0
+  },
+  "grouped_oof_classification": {
+    "intent_accuracy": 0.822,
+    "macro_precision": 0.8628071062752712,
+    "macro_recall": 0.8098689783181764,
+    "urgency_accuracy": 0.49,
+    "urgency_majority_baseline": 0.452,
+    "backend": "minilm"
+  },
+  "method": "grouped 5-fold CV on development tickets; real classifier, retrieval, router"
+}

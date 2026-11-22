@@ -12,7 +12,7 @@ def client():
 
 def test_health_and_chat_page(client):
     assert client.get("/health").json()["status"] == "ok"
-    assert "CloudServe support" in client.get("/").text
+    assert "Cloud Genie support" in client.get("/").text
 
 
 def test_ticket_endpoint_returns_decision_and_audit_trail(client):

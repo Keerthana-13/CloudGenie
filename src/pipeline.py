@@ -69,6 +69,7 @@ class SupportPipeline:
             "llm_mode": (f"{self.settings.llm_provider}:{self.settings.llm_model}" if self.llm.available
                          else "none (extractive answers)"),
             "confidence_threshold": self.policy["confidence_threshold"],
+            "confidence_model": "answerability-lr" if self.policy.get("answerability") else "intent x prior (legacy)",
             "retrieval_min_score": self.policy["retrieval_min_score"],
             "must_escalate_intents": self.policy["must_escalate_intents"],
         }

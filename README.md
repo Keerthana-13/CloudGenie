@@ -1,11 +1,11 @@
-# CloudServe support triage
+# Cloud Genie support triage
 
-A support-triage system for CloudServe Solutions. It reads a ticket from any of four channels (email, live chat,
+A support-triage system for Cloud Genie. It reads a ticket from any of four channels (email, live chat,
 docs comments, community forum), works out what it is about, finds the relevant knowledge-base article, and then
 either **answers with citations** or **escalates to a human with a prepared brief** — never silently. Every
 decision is written to a log.
 
-It is *not* a chatbot bolted onto a queue. Discovery shows that most tickets are already answered in CloudServe's own
+It is *not* a chatbot bolted onto a queue. Discovery shows that most tickets are already answered in Cloud Genie's own
 documentation and that escalations reach tier two with no context, so the system's job is (1) to deliver the
 existing answer when it can defend it, and (2) to hand everything else to an agent with the summary, the
 documentation that seemed relevant, and a statement of what it was unsure about. See `docs/architecture.md`.
@@ -62,6 +62,8 @@ python -m evaluation.harness --input <any file in the ticket schema> --output <d
 * Writes `metrics.md` / `metrics.json` (volume, business, technical, governance, calibration, fairness),
   `results.jsonl`, `decisions.db` (the decision log for the run), per-class and confusion CSVs,
   `escalation_briefs.jsonl`, and `review_sample.csv` (50 replies for two human assessors).
+* Fairness rates carry 95% bootstrap intervals, and each best-minus-worst spread is labelled over target, within
+  target or inconclusive according to whether its whole interval lies above, below or across the 5-point target.
 * Appends one line per run to `evaluation/run_ledger.jsonl` (time, input hash, ticket count) so the report can
   state when, and how many times, the held-out set was run. `--no-ledger` disables it for experiments.
 * Other flags: `--no-llm` (force extractive replies), `--limit N` (first N tickets).
@@ -95,7 +97,7 @@ After switching backend, re-tune (below) because score scales differ.
 
 | Task | How |
 |---|---|
-| Stop all automatic answers instantly (no deploy) | `POST /admin/kill-switch {"enabled": false}` with header `X-Admin-Token: $ADMIN_TOKEN`, **or** create the file `storage/KILL_SWITCH`, **or** set `AUTO_RESPOND_ENABLED=false`. Checked on every ticket. |
+| Stop all automatic answers instantly (no deploy; full on-call steps in `docs/incident_procedure.md`) | `POST /admin/kill-switch {"enabled": false}` with header `X-Admin-Token: $ADMIN_TOKEN`, **or** create the file `storage/KILL_SWITCH`, **or** set `AUTO_RESPOND_ENABLED=false`. Checked on every ticket. |
 | Resume | `{"enabled": true}` or delete `storage/KILL_SWITCH` |
 | See one ticket's full audit trail | `POST /v1/tickets` returns the `decisions` list; or query `storage/decisions.db` |
 | Prometheus metrics | `GET /metrics` (tickets by disposition, guardrail blocks, latency histogram) |
@@ -133,8 +135,8 @@ src/            ingest · classifier · knowledge_base (+embeddings) · router �
                 decision_log · pipeline · llm · api · config · telemetry
 prompts/        versioned prompt files + register (README.md)
 config/         policy.json — thresholds, must-escalate intents, guardrail patterns
-evaluation/     harness · metrics · tune_thresholds · (results/ is git-ignored)
-tests/          pytest suite (offline)         docs/   architecture and design decisions
+evaluation/     harness · metrics · tune_thresholds · discovery_stats · (results/ is git-ignored)
+tests/          pytest suite (offline)         docs/   architecture, incident procedure, discovery statistics
 data/           the four JSON files supplied with the project (development, validation, documentation, reference answers)
 .github/workflows/ci.yml   tests + unattended validation run + secret scan on every push
 ```

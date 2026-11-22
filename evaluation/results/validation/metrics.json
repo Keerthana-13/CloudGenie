@@ -1,0 +1,993 @@
+{
+  "run": {
+    "timestamp_utc": "2026-11-21T20:13:16+00:00",
+    "input_file": "data\\validation_tickets.json",
+    "input_sha256": "94c5b1adc1203f06",
+    "tickets": 80,
+    "system_version": "0.1.0",
+    "git_commit": "66d1f20",
+    "python": "3.14.5",
+    "wall_clock_seconds": 35.1,
+    "components": {
+      "embedding_and_index": "all-MiniLM-L6-v2+chroma",
+      "classifier": {
+        "version": "tfidf-lr-1.0",
+        "n_train": 500,
+        "C": 30.0,
+        "temperature": 0.5649,
+        "sklearn": "1.9.1",
+        "trained_on": "development_tickets.json"
+      },
+      "llm_mode": "none (extractive answers)",
+      "confidence_threshold": 0.65,
+      "confidence_model": "intent x prior (legacy)",
+      "retrieval_min_score": 0.077,
+      "must_escalate_intents": [
+        "security_incident",
+        "compliance_request",
+        "feature_request",
+        "unclear_request"
+      ]
+    },
+    "llm_stats": {
+      "calls": 0,
+      "cache_hits": 0,
+      "failures": 0,
+      "breaker_skips": 0,
+      "throttle_wait_s": 0.0
+    }
+  },
+  "volume": {
+    "tickets_processed": 80,
+    "answered_automatically": 61,
+    "escalated": 19,
+    "blocked_by_guardrails_then_escalated": 0,
+    "tickets_with_errors": 0,
+    "by_channel": {
+      "forum": 11,
+      "chat": 22,
+      "docs_comment": 16,
+      "email": 31
+    },
+    "escalation_reasons": {
+      "must_escalate_intent": 12,
+      "low_confidence": 5,
+      "safety_keyword": 2
+    },
+    "generation_modes": {
+      "extractive": 61
+    }
+  },
+  "business": {
+    "first_contact_resolution": 0.7625,
+    "escalation_rate": 0.2375,
+    "system_reply_time": {
+      "all_tickets": {
+        "mean_s": 0.03771,
+        "median_s": 0.0368,
+        "p95_s": 0.043405,
+        "max_s": 0.0986
+      },
+      "auto_responded": {
+        "mean_s": 0.03911803278688524,
+        "median_s": 0.0373,
+        "p95_s": 0.0435
+      },
+      "client_side_throttle_wait_total_s": 0.0,
+      "note": "Latency excludes our own free-tier throttle sleeps (reported separately); it includes retrieval, classification, generation and validation."
+    },
+    "baseline_from_ticket_history": {
+      "first_contact_resolution": 0.4625,
+      "escalation_rate": 0.5375,
+      "mean_resolution_minutes": 441.475,
+      "mean_csat": 2.6,
+      "repeat_contact_rate": 0.2125
+    },
+    "customer_satisfaction": "not measurable automatically - rate review_sample.csv against a rubric (see Evaluation Framework)",
+    "repeat_contacts": "not measurable without live follow-up data",
+    "note": "FCR here = tickets the system answered without a human, a PROXY for true first-contact resolution: we cannot observe whether the customer's problem was actually solved."
+  },
+  "technical": {
+    "classification": {
+      "available": true,
+      "n": 80,
+      "accuracy": 1.0,
+      "macro_precision": 1.0,
+      "macro_recall": 1.0,
+      "per_class": {
+        "account_access": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 4,
+          "predicted": 4
+        },
+        "api_key_issue": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 6,
+          "predicted": 6
+        },
+        "api_usage_question": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 4,
+          "predicted": 4
+        },
+        "authentication_failure": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 3,
+          "predicted": 3
+        },
+        "billing_query": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 10,
+          "predicted": 10
+        },
+        "compliance_request": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 1,
+          "predicted": 1
+        },
+        "configuration_help": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 3,
+          "predicted": 3
+        },
+        "data_export": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 1,
+          "predicted": 1
+        },
+        "data_residency": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 6,
+          "predicted": 6
+        },
+        "database_issue": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 1,
+          "predicted": 1
+        },
+        "deployment_failure": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 5,
+          "predicted": 5
+        },
+        "feature_request": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 3,
+          "predicted": 3
+        },
+        "integration_help": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 3,
+          "predicted": 3
+        },
+        "onboarding": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 4,
+          "predicted": 4
+        },
+        "performance_degradation": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 3,
+          "predicted": 3
+        },
+        "quota_or_overage": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 2,
+          "predicted": 2
+        },
+        "rate_limit": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 1,
+          "predicted": 1
+        },
+        "rollback_request": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 6,
+          "predicted": 6
+        },
+        "security_incident": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 4,
+          "predicted": 4
+        },
+        "sso_configuration": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 1,
+          "predicted": 1
+        },
+        "unclear_request": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 6,
+          "predicted": 6
+        },
+        "webhook_issue": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 3,
+          "predicted": 3
+        }
+      },
+      "urgency_accuracy": 0.4125,
+      "confusion": {
+        "api_key_issue->api_key_issue": 6,
+        "unclear_request->unclear_request": 6,
+        "authentication_failure->authentication_failure": 3,
+        "api_usage_question->api_usage_question": 4,
+        "account_access->account_access": 4,
+        "compliance_request->compliance_request": 1,
+        "billing_query->billing_query": 10,
+        "rollback_request->rollback_request": 6,
+        "performance_degradation->performance_degradation": 3,
+        "feature_request->feature_request": 3,
+        "onboarding->onboarding": 4,
+        "deployment_failure->deployment_failure": 5,
+        "data_residency->data_residency": 6,
+        "quota_or_overage->quota_or_overage": 2,
+        "webhook_issue->webhook_issue": 3,
+        "configuration_help->configuration_help": 3,
+        "security_incident->security_incident": 4,
+        "data_export->data_export": 1,
+        "rate_limit->rate_limit": 1,
+        "integration_help->integration_help": 3,
+        "sso_configuration->sso_configuration": 1,
+        "database_issue->database_issue": 1
+      },
+      "seen_vs_unseen_text": {
+        "accuracy_on_text_also_in_dev": 1.0,
+        "n_seen": 62,
+        "accuracy_on_text_not_in_dev": 1.0,
+        "n_unseen": 18,
+        "note": "Many tickets repeat the development set's wording verbatim; accuracy on unseen wording is the more honest estimate."
+      }
+    },
+    "routing": {
+      "available": true,
+      "n": 80,
+      "route_accuracy": 0.8125,
+      "auto_precision": 0.7704918032786885,
+      "auto_recall": 0.9791666666666666,
+      "must_not_auto_respond_violations": 0,
+      "auto_answered_but_labelled_escalate": 14,
+      "escalated_but_labelled_auto": 1
+    },
+    "retrieval": {
+      "available": true,
+      "n_with_expected_docs": 53,
+      "hit_rate_any": 0.9811320754716981,
+      "hit_rate_top1": 0.9811320754716981,
+      "empty_result_when_no_expected_docs": 0.0,
+      "n_without_expected_docs": 27
+    },
+    "citations": {
+      "available": true,
+      "n_sent": 61,
+      "citations_resolve_to_retrieved_corpus_passages": 1.0,
+      "cites_an_expected_document": 0.9787234042553191,
+      "n_with_expected_docs": 47,
+      "note": "Automated proxies. True citation accuracy (does the passage support the sentence?) needs the human review sample in review_sample.csv; guardrail 'grounding' enforces a lexical version at runtime."
+    },
+    "reference_comparison": {
+      "available": false,
+      "n_matched_sent_replies": 0,
+      "must_mention_coverage": null,
+      "n_with_must_mention": 0,
+      "must_not_claim_literal_hits": 0
+    },
+    "hallucination_rate": "needs human review of >= 50 replies by two assessors (review_sample.csv)"
+  },
+  "calibration": {
+    "intent_confidence": [
+      {
+        "band": "0.2-0.4",
+        "n": 1,
+        "stated": 0.244,
+        "observed": 1.0,
+        "gap_pts": -75.6
+      },
+      {
+        "band": "0.8-1.0",
+        "n": 79,
+        "stated": 0.999,
+        "observed": 1.0,
+        "gap_pts": -0.1
+      }
+    ],
+    "routing_confidence": [
+      {
+        "band": "0.6-0.7",
+        "n": 5,
+        "stated": 0.644,
+        "observed": 0.2,
+        "gap_pts": 44.4
+      },
+      {
+        "band": "0.7-0.8",
+        "n": 40,
+        "stated": 0.741,
+        "observed": 0.725,
+        "gap_pts": 1.6
+      },
+      {
+        "band": "0.8-0.9",
+        "n": 21,
+        "stated": 0.846,
+        "observed": 0.857,
+        "gap_pts": -1.1
+      }
+    ]
+  },
+  "governance": {
+    "decision_log_reconciliation": {
+      "tickets_processed": 80,
+      "tickets_with_final_disposition": 80,
+      "tickets_with_routing_decision": 80,
+      "decisions_logged": 362,
+      "decisions_by_stage": {
+        "classification": 80,
+        "generation": 61,
+        "retrieval": 80,
+        "routing": 80,
+        "validation": 61
+      },
+      "missing_disposition": [],
+      "missing_routing": [],
+      "unexpected_tickets": [],
+      "log_write_errors": 0,
+      "ok": true
+    },
+    "availability": 1.0,
+    "guardrail_activations": {},
+    "tickets_blocked_by_guardrails": 0,
+    "private_data_detections_blocked": 0,
+    "fairness": {
+      "customer_tier": {
+        "groups": {
+          "business": {
+            "n": 30,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.9,
+            "route_accuracy": 0.7333333333333333,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 1.0,
+            "ci95_pts": {
+              "auto_response_rate": [
+                76.7,
+                100.0
+              ],
+              "route_accuracy": [
+                56.7,
+                86.7
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                100.0,
+                100.0
+              ]
+            }
+          },
+          "enterprise": {
+            "n": 8,
+            "too_small_to_judge": true,
+            "auto_response_rate": 0.875,
+            "route_accuracy": 0.875,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 1.0,
+            "ci95_pts": {
+              "auto_response_rate": [
+                62.5,
+                100.0
+              ],
+              "route_accuracy": [
+                62.5,
+                100.0
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                100.0,
+                100.0
+              ]
+            }
+          },
+          "standard": {
+            "n": 42,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.6428571428571429,
+            "route_accuracy": 0.8571428571428571,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 0.96,
+            "ci95_pts": {
+              "auto_response_rate": [
+                50.0,
+                78.6
+              ],
+              "route_accuracy": [
+                73.8,
+                95.2
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                88.0,
+                100.0
+              ]
+            }
+          }
+        },
+        "spread_pts": {
+          "auto_response_rate": 25.7,
+          "route_accuracy": 12.4,
+          "intent_accuracy": 0.0,
+          "retrieval_hit_rate": 4.0
+        },
+        "spread_ci95_pts": {
+          "auto_response_rate": [
+            6.2,
+            43.3
+          ],
+          "route_accuracy": [
+            0.5,
+            31.9
+          ],
+          "intent_accuracy": [
+            0.0,
+            0.0
+          ],
+          "retrieval_hit_rate": [
+            0.0,
+            12.0
+          ]
+        },
+        "spread_verdict": {
+          "auto_response_rate": "over target (whole 95% interval above it)",
+          "route_accuracy": "inconclusive (95% interval spans the target - more tickets needed)",
+          "intent_accuracy": "within target (whole 95% interval below it)",
+          "retrieval_hit_rate": "inconclusive (95% interval spans the target - more tickets needed)"
+        },
+        "flagged_over_target": [
+          "auto_response_rate",
+          "route_accuracy"
+        ],
+        "credibly_over_target": [
+          "auto_response_rate"
+        ],
+        "note": "spread = best minus worst group among groups with n >= 10; groups below 10 are marked too_small_to_judge and left out of the spread; a spread above 5 points is listed in flagged_over_target, and in credibly_over_target only if the whole bootstrap 2000-resample 95% interval of the spread is above it"
+      },
+      "customer_region": {
+        "groups": {
+          "asia_pacific": {
+            "n": 21,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.7619047619047619,
+            "route_accuracy": 0.8571428571428571,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 1.0,
+            "ci95_pts": {
+              "auto_response_rate": [
+                57.1,
+                95.2
+              ],
+              "route_accuracy": [
+                71.4,
+                100.0
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                100.0,
+                100.0
+              ]
+            }
+          },
+          "europe": {
+            "n": 25,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.76,
+            "route_accuracy": 0.88,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 0.9473684210526315,
+            "ci95_pts": {
+              "auto_response_rate": [
+                60.0,
+                92.0
+              ],
+              "route_accuracy": [
+                76.0,
+                100.0
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                84.2,
+                100.0
+              ]
+            }
+          },
+          "latin_america": {
+            "n": 7,
+            "too_small_to_judge": true,
+            "auto_response_rate": 0.5714285714285714,
+            "route_accuracy": 0.8571428571428571,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 1.0,
+            "ci95_pts": {
+              "auto_response_rate": [
+                28.6,
+                85.7
+              ],
+              "route_accuracy": [
+                57.1,
+                100.0
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                100.0,
+                100.0
+              ]
+            }
+          },
+          "north_america": {
+            "n": 27,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.8148148148148148,
+            "route_accuracy": 0.7037037037037037,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 1.0,
+            "ci95_pts": {
+              "auto_response_rate": [
+                66.7,
+                96.3
+              ],
+              "route_accuracy": [
+                51.9,
+                85.2
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                100.0,
+                100.0
+              ]
+            }
+          }
+        },
+        "spread_pts": {
+          "auto_response_rate": 5.5,
+          "route_accuracy": 17.6,
+          "intent_accuracy": 0.0,
+          "retrieval_hit_rate": 5.3
+        },
+        "spread_ci95_pts": {
+          "auto_response_rate": [
+            3.0,
+            32.3
+          ],
+          "route_accuracy": [
+            4.6,
+            40.7
+          ],
+          "intent_accuracy": [
+            0.0,
+            0.0
+          ],
+          "retrieval_hit_rate": [
+            0.0,
+            15.8
+          ]
+        },
+        "spread_verdict": {
+          "auto_response_rate": "inconclusive (95% interval spans the target - more tickets needed)",
+          "route_accuracy": "inconclusive (95% interval spans the target - more tickets needed)",
+          "intent_accuracy": "within target (whole 95% interval below it)",
+          "retrieval_hit_rate": "inconclusive (95% interval spans the target - more tickets needed)"
+        },
+        "flagged_over_target": [
+          "auto_response_rate",
+          "route_accuracy",
+          "retrieval_hit_rate"
+        ],
+        "credibly_over_target": [],
+        "note": "spread = best minus worst group among groups with n >= 10; groups below 10 are marked too_small_to_judge and left out of the spread; a spread above 5 points is listed in flagged_over_target, and in credibly_over_target only if the whole bootstrap 2000-resample 95% interval of the spread is above it"
+      },
+      "language_fluency": {
+        "groups": {
+          "fluent": {
+            "n": 61,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.7704918032786885,
+            "route_accuracy": 0.8852459016393442,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 0.9772727272727273,
+            "ci95_pts": {
+              "auto_response_rate": [
+                65.6,
+                86.9
+              ],
+              "route_accuracy": [
+                80.3,
+                95.1
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                93.2,
+                100.0
+              ]
+            }
+          },
+          "non_fluent": {
+            "n": 19,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.7368421052631579,
+            "route_accuracy": 0.5789473684210527,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 1.0,
+            "ci95_pts": {
+              "auto_response_rate": [
+                52.6,
+                89.6
+              ],
+              "route_accuracy": [
+                36.8,
+                78.9
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                100.0,
+                100.0
+              ]
+            }
+          }
+        },
+        "spread_pts": {
+          "auto_response_rate": 3.4,
+          "route_accuracy": 30.6,
+          "intent_accuracy": 0.0,
+          "retrieval_hit_rate": 2.3
+        },
+        "spread_ci95_pts": {
+          "auto_response_rate": [
+            0.3,
+            27.5
+          ],
+          "route_accuracy": [
+            8.3,
+            54.0
+          ],
+          "intent_accuracy": [
+            0.0,
+            0.0
+          ],
+          "retrieval_hit_rate": [
+            0.0,
+            6.8
+          ]
+        },
+        "spread_verdict": {
+          "auto_response_rate": "inconclusive (95% interval spans the target - more tickets needed)",
+          "route_accuracy": "over target (whole 95% interval above it)",
+          "intent_accuracy": "within target (whole 95% interval below it)",
+          "retrieval_hit_rate": "inconclusive (95% interval spans the target - more tickets needed)"
+        },
+        "flagged_over_target": [
+          "route_accuracy"
+        ],
+        "credibly_over_target": [
+          "route_accuracy"
+        ],
+        "note": "spread = best minus worst group among groups with n >= 10; groups below 10 are marked too_small_to_judge and left out of the spread; a spread above 5 points is listed in flagged_over_target, and in credibly_over_target only if the whole bootstrap 2000-resample 95% interval of the spread is above it"
+      },
+      "channel": {
+        "groups": {
+          "chat": {
+            "n": 22,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.7272727272727273,
+            "route_accuracy": 0.8636363636363636,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 0.9230769230769231,
+            "ci95_pts": {
+              "auto_response_rate": [
+                54.5,
+                90.9
+              ],
+              "route_accuracy": [
+                68.2,
+                100.0
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                76.9,
+                100.0
+              ]
+            }
+          },
+          "docs_comment": {
+            "n": 16,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.625,
+            "route_accuracy": 0.75,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 1.0,
+            "ci95_pts": {
+              "auto_response_rate": [
+                37.5,
+                87.5
+              ],
+              "route_accuracy": [
+                56.2,
+                93.8
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                100.0,
+                100.0
+              ]
+            }
+          },
+          "email": {
+            "n": 31,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.8709677419354839,
+            "route_accuracy": 0.8064516129032258,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 1.0,
+            "ci95_pts": {
+              "auto_response_rate": [
+                74.2,
+                96.8
+              ],
+              "route_accuracy": [
+                64.5,
+                93.5
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                100.0,
+                100.0
+              ]
+            }
+          },
+          "forum": {
+            "n": 11,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.7272727272727273,
+            "route_accuracy": 0.8181818181818182,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 1.0,
+            "ci95_pts": {
+              "auto_response_rate": [
+                45.5,
+                100.0
+              ],
+              "route_accuracy": [
+                54.5,
+                100.0
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                100.0,
+                100.0
+              ]
+            }
+          }
+        },
+        "spread_pts": {
+          "auto_response_rate": 24.6,
+          "route_accuracy": 11.4,
+          "intent_accuracy": 0.0,
+          "retrieval_hit_rate": 7.7
+        },
+        "spread_ci95_pts": {
+          "auto_response_rate": [
+            11.1,
+            53.0
+          ],
+          "route_accuracy": [
+            5.8,
+            43.8
+          ],
+          "intent_accuracy": [
+            0.0,
+            0.0
+          ],
+          "retrieval_hit_rate": [
+            0.0,
+            23.1
+          ]
+        },
+        "spread_verdict": {
+          "auto_response_rate": "over target (whole 95% interval above it)",
+          "route_accuracy": "over target (whole 95% interval above it)",
+          "intent_accuracy": "within target (whole 95% interval below it)",
+          "retrieval_hit_rate": "inconclusive (95% interval spans the target - more tickets needed)"
+        },
+        "flagged_over_target": [
+          "auto_response_rate",
+          "route_accuracy",
+          "retrieval_hit_rate"
+        ],
+        "credibly_over_target": [
+          "auto_response_rate",
+          "route_accuracy"
+        ],
+        "note": "spread = best minus worst group among groups with n >= 10; groups below 10 are marked too_small_to_judge and left out of the spread; a spread above 5 points is listed in flagged_over_target, and in credibly_over_target only if the whole bootstrap 2000-resample 95% interval of the spread is above it"
+      },
+      "ticket_length": {
+        "groups": {
+          "long (>30)": {
+            "n": 11,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.9090909090909091,
+            "route_accuracy": 0.7272727272727273,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 1.0,
+            "ci95_pts": {
+              "auto_response_rate": [
+                72.7,
+                100.0
+              ],
+              "route_accuracy": [
+                45.5,
+                100.0
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                100.0,
+                100.0
+              ]
+            }
+          },
+          "medium (21-30)": {
+            "n": 40,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.8,
+            "route_accuracy": 0.8,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 0.9642857142857143,
+            "ci95_pts": {
+              "auto_response_rate": [
+                67.5,
+                92.5
+              ],
+              "route_accuracy": [
+                67.5,
+                92.5
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                89.3,
+                100.0
+              ]
+            }
+          },
+          "short (<=20 words)": {
+            "n": 29,
+            "too_small_to_judge": false,
+            "auto_response_rate": 0.6551724137931034,
+            "route_accuracy": 0.8620689655172413,
+            "intent_accuracy": 1.0,
+            "retrieval_hit_rate": 1.0,
+            "ci95_pts": {
+              "auto_response_rate": [
+                48.3,
+                82.8
+              ],
+              "route_accuracy": [
+                72.4,
+                96.6
+              ],
+              "intent_accuracy": [
+                100.0,
+                100.0
+              ],
+              "retrieval_hit_rate": [
+                100.0,
+                100.0
+              ]
+            }
+          }
+        },
+        "spread_pts": {
+          "auto_response_rate": 25.4,
+          "route_accuracy": 13.5,
+          "intent_accuracy": 0.0,
+          "retrieval_hit_rate": 3.6
+        },
+        "spread_ci95_pts": {
+          "auto_response_rate": [
+            6.8,
+            46.1
+          ],
+          "route_accuracy": [
+            3.2,
+            44.2
+          ],
+          "intent_accuracy": [
+            0.0,
+            0.0
+          ],
+          "retrieval_hit_rate": [
+            0.0,
+            10.7
+          ]
+        },
+        "spread_verdict": {
+          "auto_response_rate": "over target (whole 95% interval above it)",
+          "route_accuracy": "inconclusive (95% interval spans the target - more tickets needed)",
+          "intent_accuracy": "within target (whole 95% interval below it)",
+          "retrieval_hit_rate": "inconclusive (95% interval spans the target - more tickets needed)"
+        },
+        "flagged_over_target": [
+          "auto_response_rate",
+          "route_accuracy"
+        ],
+        "credibly_over_target": [
+          "auto_response_rate"
+        ],
+        "note": "spread = best minus worst group among groups with n >= 10; groups below 10 are marked too_small_to_judge and left out of the spread; a spread above 5 points is listed in flagged_over_target, and in credibly_over_target only if the whole bootstrap 2000-resample 95% interval of the spread is above it"
+      }
+    },
+    "private_data_in_sent_replies": 0
+  }
+}
