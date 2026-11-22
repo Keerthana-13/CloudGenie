@@ -1,11 +1,11 @@
-# CloudServe support triage
+# Cloud Genie support triage
 
-A support-triage system for CloudServe Solutions. It reads a ticket from any of four channels (email, live chat,
+A support-triage system for Cloud Genie. It reads a ticket from any of four channels (email, live chat,
 docs comments, community forum), works out what it is about, finds the relevant knowledge-base article, and then
 either **answers with citations** or **escalates to a human with a prepared brief** — never silently. Every
 decision is written to a log.
 
-It is *not* a chatbot bolted onto a queue. Discovery shows that most tickets are already answered in CloudServe's own
+It is *not* a chatbot bolted onto a queue. Discovery shows that most tickets are already answered in Cloud Genie's own
 documentation and that escalations reach tier two with no context, so the system's job is (1) to deliver the
 existing answer when it can defend it, and (2) to hand everything else to an agent with the summary, the
 documentation that seemed relevant, and a statement of what it was unsure about. See `docs/architecture.md`.

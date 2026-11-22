@@ -19,7 +19,7 @@ from .schemas import Generation, Passage, Ticket
 log = logging.getLogger(__name__)
 GENERATE_PROMPT_FILE = "PR-02_generate_answer.v1.md"
 
-FOOTER = ("This reply was drafted automatically from CloudServe's support documentation. "
+FOOTER = ("This reply was drafted automatically from Cloud Genie's support documentation. "
           "If it does not resolve your issue, reply to this message and our support team will take over.")
 
 

@@ -1,7 +1,7 @@
 # Architecture and design decisions
 
 ## 1. What the system is for
-Interviews and ticket data point at the same thing: CloudServe does not lack answers, it lacks a way of delivering them
+Interviews and ticket data point at the same thing: Cloud Genie does not lack answers, it lacks a way of delivering them
 (71% of development tickets are answerable from the 29 existing articles; internal search matches titles, not
 customers' wording), and escalations arrive without context (about half of what reaches tier two could have been
 resolved at tier one). So the system **delivers the existing answer when it can defend it, and otherwise escalates

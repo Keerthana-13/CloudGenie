@@ -31,9 +31,9 @@ async def lifespan(app: FastAPI):
     _state["pipeline"].decisions.close()
 
 
-app = FastAPI(title="CloudServe support triage", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="Cloud Genie support triage", version="0.1.0", lifespan=lifespan)
 
-CHAT_PAGE = r"""<!doctype html><html lang="en"><meta charset="utf-8"><title>CloudServe support</title>
+CHAT_PAGE = r"""<!doctype html><html lang="en"><meta charset="utf-8"><title>Cloud Genie support</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 :root{--bg:#f3f5f9;--card:#fff;--ink:#1f2937;--mute:#6b7280;--line:#e5e7eb;--brand:#2563eb;--ok:#16a34a;--warn:#d97706}
@@ -69,7 +69,7 @@ button:disabled{opacity:.5;cursor:wait}
 .typing{color:var(--mute);font-style:italic}
 </style>
 <div class="app">
-<header><h1>CloudServe support</h1><p>Replies are drafted automatically from CloudServe's support documentation.</p></header>
+<header><h1>Cloud Genie support</h1><p>Replies are drafted automatically from Cloud Genie's support documentation.</p></header>
 <div id="log"><div class="empty" id="empty">Describe your problem below and press Send.</div></div>
 <form id="f">
 <select id="ch" title="Channel"><option>chat</option><option>email</option><option>docs_comment</option><option>forum</option></select>
